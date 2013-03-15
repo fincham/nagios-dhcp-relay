@@ -21,11 +21,11 @@ If your Nagios server has the IP `198.51.100.1` and your DHCP server is at `203.
 
     shared-network nagios {
         # Fake client will request 192.0.2.1
-            subnet 192.0.2.0 netmask 255.255.255.0 {
+        subnet 192.0.2.0 netmask 255.255.255.0 {
         }
 
         # Nagios server
-            subnet 116.90.133.72 netmask 255.255.255.255 {
+        subnet 116.90.133.72 netmask 255.255.255.255 {
         }
     }
 
