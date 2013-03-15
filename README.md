@@ -25,7 +25,7 @@ If your Nagios server has the IP `198.51.100.1` and your DHCP server is at `203.
         }
 
         # Nagios server
-        subnet 116.90.133.72 netmask 255.255.255.255 {
+        subnet 198.51.100.1 netmask 255.255.255.255 {
         }
     }
 
