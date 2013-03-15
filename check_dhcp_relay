@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # check_dhcp_relay by Michael Fincham <michael@unleash.co.nz>, 2013-03-15
-# (c) Unleash Computers Ltd 2013. Please see file LICENCE for distribution information.
+# (c) Unleash Computers Ltd 2013. Please see file LICENSE for distribution information.
 
 import sys
 from scapy.all import *
