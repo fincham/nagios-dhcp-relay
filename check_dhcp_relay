@@ -1,0 +1,42 @@
+#!/usr/bin/python
+
+# check_dhcp_relay by Michael Fincham <michael@unleash.co.nz>, 2013-03-15
+# (c) Unleash Computers Ltd 2013. Please see file LICENCE for distribution information.
+
+import sys
+from scapy.all import *
+
+FAKE_CLIENT_MAC = chr(171) * 6 # must be a string of 6 bytes. This example is equivalent to 'ab:ab:ab:ab:ab:ab'
+FAKE_CLIENT_DESIRED_IP = "192.0.2.1"
+
+TIMEOUT = 5
+RETRIES = 5
+    
+try:
+    SOURCE_IP = sys.argv[1] 
+    DESTINATION_IP = sys.argv[2] 
+except:
+    print "Usage: %s <source IP> <destination IP>" % sys.argv[0]
+    sys.exit(2)
+
+dhcp_request = IP(src=SOURCE_IP, dst=DESTINATION_IP)/UDP(dport=67)/BOOTP(giaddr=SOURCE_IP, chaddr=FAKE_CLIENT_MAC)/DHCP(options=[ # strictly speaking the source port should be 68, but scapy seems to have trouble receiving the response packets if this is set
+    ("message-type", "request"),
+    ("requested_addr", FAKE_CLIENT_DESIRED_IP),
+    "end"
+])
+
+for attempt in range(0, RETRIES):
+
+    ans = sr1(dhcp_request, timeout=TIMEOUT, verbose=False)
+    if ans == None:
+        continue
+    message_type = ans[0][1][DHCP].options[0][1]
+    print "Response: %s" % DHCPTypes[message_type]
+    if message_type == 5: # 5 is 'ACK'
+        sys.exit(0)
+    else:
+        sys.exit(2)
+
+print "Error reading response from DHCP server"
+sys.exit(2)
+
